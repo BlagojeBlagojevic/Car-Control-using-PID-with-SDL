@@ -6,7 +6,6 @@ This is a C code repository that demonstrates a simple car control system using 
 * Prerequisites
 * Code Structure
 * How to Use
-* Customization
 * License
 ## Overview
 This code simulates a car's movement to reach a desired destination using PID control. 
