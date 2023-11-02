@@ -97,7 +97,23 @@ void MainRenderrer(SDL_Renderer  *renderer,CAR *car)
 	SDL_Delay(100);
 	
 }
-
+void GraphRenderer(GRAPH *graph,SDL_Renderer *renderer)
+{
+	
+	SDL_RenderClear(renderer);
+	SDL_SetRenderDrawColor(renderer,0,255,0,255);
+	for(size_t x = 0; x < 200;x++ )
+	{
+		int error =  (int)sqrt(graph->error[0][x]*graph->error[0][x]+graph->error[1][x]*graph->error[1][x]);//graph->error[0][x];
+		//int error =  graph->position[0][x]	;
+		if(error > 0)
+		SDL_RenderDrawPoint(renderer,x*6,width/2-error);
+	}
+		
+	SDL_SetRenderDrawColor(renderer,0,0,0,0);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(10000);
+}
 
 void Limit_Speed_Acceleration(CAR *car)
 
@@ -105,31 +121,31 @@ void Limit_Speed_Acceleration(CAR *car)
 	//ACCELERATION LIMIT
 	
 	//SPEED LIMIT x
-	if(car->speed[0] > 10)
+	if(car->speed[0] > 15)
 		car->speed[0] = 10;
-	if(car->speed[0] > 10)
+	if(car->speed[0] > 15)
 		car->speed[0] = 10;
 		
-	if(car->speed[0] < -10)
+	if(car->speed[0] < -15)
 		car->speed[0] = -10;
-	if(car->speed[0] < -10)
+	if(car->speed[0] < -15)
 		car->speed[0] = -10;
 		
 		
-	if(car->speed[1] > 5)
+	if(car->speed[1] > 10)
 		car->speed[1] = 5;
-	if(car->speed[1] > 5)
+	if(car->speed[1] > 10)
 		car->speed[1] = 5;
 		
-	if(car->speed[1] < -5)
-		car->speed[1] = -5;
-	if(car->speed[1] < -5)
-		car->speed[1] = -5;		
+	if(car->speed[1] < -10)
+		car->speed[1] = -10;
+	if(car->speed[1] < -10)
+		car->speed[1] = -10;		
 
 }
 float RandError() //This Function is used to model error during measurement process
 {
-	
+	//return 0;
 	if(rand()%2==0)
 		return rand()%10;
 	return -1*rand()%10;
@@ -158,8 +174,10 @@ void UpdateCar(CAR *car,GRAPH *graph,size_t i)
 	Limit_Speed_Acceleration(car);
 	
 	//Update posiions
-	car->car.x+=(int)car->speed[0];
-	car->car.y+=(int)car->speed[1]*1.4;
+	//car->car.x+=(int)car->speed[0];car->car.y+=(int)car->speed[1]*1.4;
+	car->car.x+=(10*tanh(car->speed[0]));
+	car->car.y+=10*tanh(car->speed[1]);
+	//car->car.y+=exp(car->speed[1]*0.3)-10;
 	graph->position[0][i]=car->car.x;
 	graph->position[1][i]=car->car.y;
 	
@@ -198,9 +216,8 @@ int main()
 	SDL_Window *window;
 	SDL_Renderer *renderer;
 	SDL_CreateWindowAndRenderer(width,height,SDL_RENDERER_ACCELERATED,&window,&renderer);
-	CAR car;
+	CAR car[10];
 	GRAPH graph;
-	
 	Init_Car(&car);
 	srand(time(0));
 	size_t i = 0;
@@ -216,6 +233,7 @@ int main()
 		{
 			RandDestination(&car);
 			i=0;
+			GraphRenderer(&graph,renderer);
 			
 		}
 		//Limit_Speed_Acceleration(&car);
