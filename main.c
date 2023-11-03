@@ -83,7 +83,7 @@ void MainRenderrer(SDL_Renderer  *renderer,CAR *car)
 	rect.w=car->car.w;
 	rect.x=car->desired.x;
 	rect.y=car->desired.y;
-	//Check_Boundary(car);
+	//Ch
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer,0,255,0,255);
 	SDL_RenderFillRect(renderer,&car->car);
