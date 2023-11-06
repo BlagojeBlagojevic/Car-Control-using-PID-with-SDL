@@ -224,6 +224,8 @@ int main()
 
 	//MainRenderrer(renderer,&car);
 	while(1){
+		SDL_Event event;
+		while (SDL_PollEvent(&event)) {};
 		MainRenderrer(renderer,&car);
 		//GrapRenderrer(renderer,&graph,i);
 		UpdateCar(&car,&graph,i);
